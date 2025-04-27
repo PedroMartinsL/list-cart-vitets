@@ -26,12 +26,11 @@
     </style>
   </head>
   <body>
-
     <h1>Desserts</h1>
 
     <ul id="menu"></ul>
 
-    Your Cart (<!-- Quantity -->) Your added items will appear here
+    <div id="cartBlock"></div>
 
     <div class="attribution">
       Challenge by
@@ -41,6 +40,9 @@
 
     <script type="module">
       import Product from "./models/Product.ts";
+      import Cart from "./models/Cart.ts";
+
+      let cartContainer = null;
 
       async function fetchProducts() {
         const response = await fetch("./data.json");
@@ -58,17 +60,29 @@
         );
       }
 
-      fetchProducts().then((products) => {
+      async function initialize() {
+        const products = await fetchProducts();
         const menu = document.getElementById("menu");
+        cartContainer = new Cart(products);
 
+        
         products.forEach((product) => {
           const li = document.createElement("li");
-
-          li.appendChild(product.render());
-
-          menu.appendChild(li);
+          try {
+            li.appendChild(product.render(cartContainer));
+            menu.appendChild(li);
+          } catch (error) {
+            console.error("Error rendering product:", error);
+          }
         });
-      });
+
+        
+        const cart = document.getElementById("cartBlock");
+        console.log(cartContainer);
+        cart.appendChild(cartContainer.render());
+      }
+
+      initialize();
     </script>
   </body>
 </html>

@@ -1,31 +1,74 @@
 import Product from "./Product";
 
 export default class Cart {
-    private _items: { [key: number]: Product } = {};
+    private _items: Product[];
 
-    private _totalPrice: number = 0;
-    private _totalItems: number = 0;
+    private _totalItems: HTMLElement | null = null;
+    private _totalPrice: HTMLElement | null = null;
 
-    
-
-    get items(): { [key: number]: Product } {
+    get items(): Product[] {
         return this._items;
     }
 
     get totalPrice(): number {
-        return this._totalPrice;
-    }
-
-    get totalItems(): number {
-        return this.totalItems;
-    }
-
-    set totalPrice(price: number) {
-        this._totalPrice = price;
-    }
+        return this._items.reduce((total, item) => total + item.price * item.quantity, 0);
+      }
     
-    set totalItems(items: number) {
-        this._totalItems = items;
+      get totalItems(): number {
+        return this._items.reduce((total, item) => total + item.quantity, 0);
+      }
+    constructor(items: Product[]) {
+        this._items = items;
+
+        this._totalItems = document.querySelector(".totalItems");
+        this._totalPrice = document.querySelector(".totalPrice");
     }
 
+    render() {
+        const div = document.getElementById('cartBlock');
+        const titleCount: string = `<h2>Your Cart(${this.totalItems})</h2>`;
+        const titlePrice: string = `<h2>Total Price: $${this.totalPrice.toFixed(2)}</h2>`;
+
+        if (!div) {
+            throw new Error("Element with id 'cartBlock' not found.");
+        }
+
+        div.innerHTML = titleCount;
+        div.innerHTML += titlePrice;
+        const divList = document.createElement('div');
+        
+        divList.innerHTML = this.loadInfoCart();
+        return div.appendChild(divList);
+    }
+
+    loadInfoCart(): string {
+        
+        let insertList: string = ``;
+        let isEmpty = true;
+
+        
+    
+        for (const product of this.items) {
+            if (product.quantity > 0) {
+                isEmpty = false;
+                insertList += `
+
+
+
+                <div class="product">
+                    <h2>${product.name}</h2>
+                    <span>Quantity: ${product.quantity}</span>
+                    <span>Price: $${product.price.toFixed(2)}</span>
+                    <span>Total: $${(product.price * product.quantity).toFixed(2)}</span>
+                </div>
+                `;
+            }
+        }
+    
+        if (isEmpty) {
+            insertList += `<p>Your added items will appear here</p>`;
+        }
+    
+        return insertList;
+    }
 }

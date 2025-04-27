@@ -1,3 +1,5 @@
+import Cart from "./Cart.ts";
+
 export default class Product {
   private _id: number;
   private _name: string;
@@ -6,7 +8,7 @@ export default class Product {
   private _imageUrl: string;
   private _quantity: number;
   private quantityElement: HTMLElement | null = null;
-  
+
   constructor(
     id: number,
     name: string,
@@ -22,23 +24,33 @@ export default class Product {
     this._category = category;
   }
 
-  render() {
+  render(cart: Cart) {
     const productElement = document.createElement("div");
+
     productElement.innerHTML = `
         <h2>${this.name}</h2>
         <p>${this.category}</p>
         <span>$${this.price.toFixed(2)}</span>
         <button class="appendItem">Add to Cart</button>
+        <button class="removeItem">Remove from Cart</button>
         <span class="quantity">${this.quantity}</span>
-      `;
+    `;
 
-      const button = productElement.querySelector(".appendItem");
-      if (button) {
-        button.addEventListener("click", () => this.addItem());
-      }
-      this.quantityElement = productElement.querySelector(".quantity");
+    const buttonAdd = productElement.querySelector(".appendItem");
+    if (buttonAdd) {
+        buttonAdd.addEventListener("click", () => this.addItem(cart));
+    }
+
+    const buttonDel = productElement.querySelector(".removeItem");
+    if (buttonDel) {
+        buttonDel.addEventListener("click", () => this.removeItem(cart));
+    }
+
+    this.quantityElement = productElement.querySelector(".quantity");
+    
     return productElement;
-  }
+}
+
 
   get id(): number {
     return this._id;
@@ -71,13 +83,24 @@ export default class Product {
     this._quantity = quantity;
   }
 
-  addItem(): void {
+  addItem(cart: Cart): void {
     this.quantity++;
     if (this.quantityElement) {
       this.quantityElement.textContent = `${this.quantity}`;
     }
+
+    cart.render();
   }
-  removeItem(): void {
-    this.quantity--;
+
+  removeItem(cart: Cart): void {
+    if (this.quantity > 0) {
+      this.quantity--;
+    }
+
+    if (this.quantityElement) {
+      this.quantityElement.textContent = `${this.quantity}`;
+    }
+
+    cart.render();
   }
 }
