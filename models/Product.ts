@@ -31,6 +31,7 @@ export default class Product {
         <h2>${this.name}</h2>
         <p>${this.category}</p>
         <span>$${this.price.toFixed(2)}</span>
+        <img src="${this.imageUrl}" alt="${this.name}">
         <button class="appendItem">Add to Cart</button>
         <button class="removeItem">Remove from Cart</button>
         <span class="quantity">${this.quantity}</span>
