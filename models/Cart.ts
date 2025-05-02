@@ -46,15 +46,10 @@ export default class Cart {
         let insertList: string = ``;
         let isEmpty = true;
 
-        
-    
         for (const product of this.items) {
             if (product.quantity > 0) {
                 isEmpty = false;
                 insertList += `
-
-
-
                 <div class="product">
                     <h2>${product.name}</h2>
                     <span>Quantity: ${product.quantity}</span>
@@ -64,11 +59,12 @@ export default class Cart {
                 `;
             }
         }
-    
+
         if (isEmpty) {
             insertList += `<p>Your added items will appear here</p>`;
         }
-    
+
         return insertList;
     }
 }
+

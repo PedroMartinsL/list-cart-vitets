@@ -50,8 +50,7 @@ export default class Product {
     this.quantityElement = productElement.querySelector(".quantity");
     
     return productElement;
-}
-
+  }
 
   get id(): number {
     return this._id;
@@ -105,3 +104,4 @@ export default class Product {
     cart.render();
   }
 }
+
