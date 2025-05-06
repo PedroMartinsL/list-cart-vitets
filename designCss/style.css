@@ -14,7 +14,7 @@ body {
 
 /* Cabeçalho */
 h1 {
-    text-align: center;
+    text-align: left;
     font-size: 2.5rem;
     margin-bottom: 30px;
     color: #d94f4f;
@@ -67,7 +67,7 @@ h1 {
     color: #8d3e3e;
 }
 
-/* Botões */
+/* Botões no Geral */
 button {
     padding: 8px 16px;
     margin: 4px;
@@ -139,7 +139,7 @@ button:hover {
     flex: 3;
 }
 
-/* Estilo para o carrinho lateral */
+/* carrinho lateral */
 #cartBlock {
     flex: 1;
     position: sticky;
