@@ -26,20 +26,29 @@ export default class Cart {
 
     render() {
         const div = document.getElementById('cartBlock');
-        const titleCount: string = `<h2>Your Cart(${this.totalItems})</h2>`;
-        const titlePrice: string = `<h2>Total Price: $${this.totalPrice.toFixed(2)}</h2>`;
-
+        const titleCount: string = `<h2>Your Cart (${this.totalItems})</h2>`;
+        
         if (!div) {
             throw new Error("Element with id 'cartBlock' not found.");
         }
-
-        div.innerHTML = titleCount;
-        div.innerHTML += titlePrice;
-        const divList = document.createElement('div');
         
+        div.innerHTML = titleCount;
+        
+        // Adiciona os produtos no carrinho
+
+        const divList = document.createElement('div');
         divList.innerHTML = this.loadInfoCart();
-        return div.appendChild(divList);
-    }
+        div.appendChild(divList);
+        
+        
+        div.innerHTML += `
+        <p class="cart-total">Total: $${this.totalPrice.toFixed(2)}</p>
+        <button class="confirm-order">Confirm Order</button>
+        `;
+
+  return div;
+}
+
 
     loadInfoCart(): string {
         
